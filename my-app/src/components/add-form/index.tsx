@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from "react";
-import { uid } from "uid";
 import { useAppDispatch, add } from "../../store";
 
 const initialState = {
@@ -15,13 +14,11 @@ const AddForm = () => {
     setUser((prevs) => ({
       ...prevs,
       [name]: value,
-      id: uid(),
     }));
   };
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLButtonElement>) => {
-      e.preventDefault();
       dispatch(add(user));
       setUser(initialState);
     },
@@ -47,7 +44,7 @@ const AddForm = () => {
             handleChange(e);
           }}
         />
-        <button onClick={(e) => handleSubmit(e)}>Add</button>
+        <button type="button" onClick={(e) => handleSubmit(e)}>Add</button>
       </form>
     </>
   );

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   getTodoListSelector,
   useAppDispatch,
@@ -16,7 +16,6 @@ const TodoList = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [updatedObj, setUpdatedObj] = useState(initialData);
   const dispatch = useAppDispatch();
-  //niye useMemo
   const boundActionCreators = useMemo(
     () => bindActionCreators({ remove, update }, dispatch),
     [dispatch]
@@ -41,20 +40,33 @@ const TodoList = () => {
 
   const editUser = useCallback(
     (todoObj: ITodo) => {
-      const { name, sname, id } = todoObj ?? {};
-      // console.log(name, sname, id);
-
-      boundActionCreators.update({
-        id,
-        name: updatedObj.updatedname || name,
-        sname: updatedObj.updatedsname || sname,
-      });
-      setUpdatedObj(initialData);
       setIsEdit(!isEdit);
+      const { name, sname, id } = todoObj ?? {};
+      if (isEdit) {
+        boundActionCreators.update({
+          name: updatedObj.updatedname,
+          sname: updatedObj.updatedsname,
+          id,
+        });
+        setUpdatedObj({
+          updatedname: name!,
+          updatedsname: sname as string,
+          // type custing
+        });
+      } else {
+        setUpdatedObj((prevs) => ({
+          ...prevs,
+          updatedname: name!,
+          updatedsname: sname!,
+        }));
+      }
     },
     [updatedObj, isEdit, boundActionCreators]
   );
 
+  // useEffect(()=>{
+
+  // })
   return (
     <>
       <ul>
