@@ -23,6 +23,7 @@ const AddForm = () => {
     (e: React.FormEvent<HTMLButtonElement>) => {
       e.preventDefault();
       dispatch(add(user));
+      setUser(initialState);
     },
     [user, dispatch]
   );
@@ -33,12 +34,14 @@ const AddForm = () => {
         <label>Name</label>
         <input
           name="name"
+          value={user.name}
           onChange={(e) => {
             handleChange(e);
           }}
         />
         <label>Surname</label>
         <input
+          value={user.sname}
           name="sname"
           onChange={(e) => {
             handleChange(e);
